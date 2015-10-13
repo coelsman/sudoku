@@ -41,7 +41,7 @@ if ("undefined" == typeof jQuery)
 		/********************************
 		*        EVENT LISTENERS        *
 		*********************************/
-		this.element.find('.puzzle').on('click', 'span:not(.fixed)', $.proxy(this.cellSelected, this));
+		this.element.find('.puzzle').on('click', '.devide_width_9', $.proxy(this.cellSelected, this));
 		this.element.find('.wrap_select_number').on('click', '.number_item', $.proxy(this.numberSelected, this));
 		this.element.find('.wrap_select_number').on('click', '.mark_button', $.proxy(this.activeMarkNumber, this));
 	};
@@ -135,6 +135,10 @@ if ("undefined" == typeof jQuery)
 		//------------EVENT LISTENERS-------------
 		cellSelected: function (e) {
 			var _target = $(e.target);
+			if (_target.hasClass('wrap_mark'))
+				_target = _target.parent().children('span');
+			if (_target.hasClass('mark'))
+				_target = _target.parent().parent().children('span');
 			var t = parseInt(_target.attr('row'));
 			var l = parseInt(_target.attr('col'));
 			this.selected.row = t; this.selected.col = l;
