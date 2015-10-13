@@ -139,20 +139,28 @@ if ("undefined" == typeof jQuery)
 				_target = _target.parent().children('span');
 			if (_target.hasClass('mark'))
 				_target = _target.parent().parent().children('span');
-			var t = parseInt(_target.attr('row'));
-			var l = parseInt(_target.attr('col'));
-			this.selected.row = t; this.selected.col = l;
-			$('span:not(.fixed)').removeClass('selected filled');
-			$('span[row="'+t+'"]').addClass('filled');
-			$('span[col="'+l+'"]').addClass('filled');
-			_target.addClass('selected');
+			if (!_target.hasClass('fixed')) {
+				var t = parseInt(_target.attr('row'));
+				var l = parseInt(_target.attr('col'));
+				this.selected.row = t; this.selected.col = l;
+				$('span:not(.fixed)').removeClass('selected filled');
+				$('span[row="'+t+'"]').addClass('filled');
+				$('span[col="'+l+'"]').addClass('filled');
+				_target.addClass('selected');
+			}
 		},
 		numberSelected: function (e) {
 			var num = $(e.target).attr('value');
 			if (!this.isActiveMark)
 				$('span:not(.fixed)[row="'+this.selected.row+'"][col="'+this.selected.col+'"]').html(num);
-			else
-				$('span:not(.fixed)[row="'+this.selected.row+'"][col="'+this.selected.col+'"]').parent().find('.wrap_mark').append('<div class="mark">'+num+'</div>');
+			else {
+				if (num == parseInt(num)) {
+					if ($('span:not(.fixed)[row="'+this.selected.row+'"][col="'+this.selected.col+'"]').parent().find('.wrap_mark .mark').length < 4)
+						$('span:not(.fixed)[row="'+this.selected.row+'"][col="'+this.selected.col+'"]').parent().find('.wrap_mark').append('<div class="mark">'+num+'</div>');
+				} else {
+					$('span:not(.fixed)[row="'+this.selected.row+'"][col="'+this.selected.col+'"]').parent().find('.wrap_mark').html('');
+				}
+			}
 		},
 		activeMarkNumber: function (e) {
 			this.isActiveMark = !this.isActiveMark;
